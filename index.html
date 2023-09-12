@@ -17,7 +17,7 @@
             <div class="face top">
              </div>
             <div class="face bottom">
-                Congratulations!
+                <div>Congratulations!</div>
                 <div class="reset">
                     Again?
                 </div>
@@ -27,6 +27,17 @@
             <div class="face right">
              </div>
         </div>
+    </div>
+    <div class="timer-container">
+        <div class="timer-circle">
+            <svg xmlns="http://www.w3.org/2000/svg">
+                <g>
+                 <title>Layer 1</title>
+                 <circle id="timerCircle" r="18" cx="35" cy="30"></circle>
+                </g>
+            </svg>
+        </div>
+        <div id="questionTimer" class="timer">15</div>
     </div>
     <form class="input-container" id="answerForm" autocomplete="off">
         <input type="text" id="userAnswer" placeholder="Your answer">

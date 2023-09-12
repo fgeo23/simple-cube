@@ -2,7 +2,7 @@
 .cube-container {
   align-items: center;
   display: flex;
-  height: 80vh;
+  height: 50vh;
   justify-content: center;
   perspective: 1000px;
 }
@@ -80,4 +80,47 @@ input {
   color: white;
   border: none;
   cursor: pointer;
+}
+
+/* stopwatch timer */
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+}
+
+.timer {
+  position: absolute;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+svg {
+  width: 60px;
+  height: 60px;
+  top: -30px;
+  left: -30px;
+  transform: rotateY(-180deg) rotateZ(-90deg);
+}
+
+svg circle {
+  stroke-dasharray: 113px;
+  stroke-dashoffset: 0px;
+  stroke-linecap: round;
+  stroke-width: 8px;
+  stroke: #007bff;;
+  fill: none;
+  animation: countdown 15s linear infinite forwards;
+}
+
+@keyframes countdown {
+  from {
+    stroke-dashoffset: 0px;
+  }
+  to {
+    stroke-dashoffset: 113px;
+  }
 }

@@ -1,7 +1,10 @@
 const answerForm = document.getElementById("answerForm");
 const userAnswerInput = document.getElementById("userAnswer");
+const questionTimer = document.getElementById("questionTimer");
 
 let currentIndex = 0;
+let timer;
+const questionDuration = 15; // The duration for each question in seconds
 
 // Define the states
 const states = {
@@ -13,6 +16,8 @@ const states = {
 
 // Initialize the cube state
 let cubeState = states.INITIAL;
+
+userAnswerInput.focus();
 
 const cube = document.querySelector(".cube");
 
@@ -35,14 +40,43 @@ function showNewQuestion() {
   currentIndex = (currentIndex + 1) % questionsAndAnswers.length;
 
   // Update the cube content with the new question
-  setTimeout(() => {
-    initializeCube();
-  }, 300);
+  initializeCube();
 
-  setTimeout(() => {
-    cubeState = states.INITIAL;
-    rotateCube();
-  }, 250);
+  // Reset the cube's rotation to the top
+  cube.style.transform = `rotateX(0deg)`;
+
+  // Start the countdown timer for the new question
+  startTimer();
+}
+
+// Function to start the countdown timer for each question
+function startTimer() {
+  let timeLeft = questionDuration;
+  questionTimer.textContent = `${timeLeft}`;
+
+  timer = setInterval(() => {
+    timeLeft--;
+
+    if (timeLeft <= 0) {
+      // Time's up, transition to the next question
+      clearInterval(timer);
+      cubeState = states.INITIAL;
+      rotateCube();
+    } else {
+      questionTimer.textContent = `${timeLeft}`;
+    }
+  }, 1000); // Update the timer every second (1000 milliseconds)
+}
+
+// Function to reset the timer animation
+function resetTimerAnimation() {
+    const timerCircle = document.getElementById("timerCircle");
+    console.log(timerCircle);
+    // Reset the stroke-dashoffset property to its initial value
+    timerCircle.style.display = 'none';
+    setTimeout(() => {
+        timerCircle.style.display = 'block'; 
+    });
 }
 
 // Handle answer
@@ -62,6 +96,7 @@ answerForm.addEventListener("submit", (e) => {
     cubeState = states.WRONG_ANSWER; // Transition to the wrongAnswer state
   }
 
+  clearInterval(timer); // Stop the timer
   rotateCube(); // Rotate the cube based on the current state
 
   userAnswerInput.value = "";
@@ -75,6 +110,7 @@ function rotateCube() {
       setTimeout(() => {
         if (cubeState !== states.JUMP_UP) {
           showNewQuestion(); // Show a new question after rotating (except when jumping up)
+          resetTimerAnimation(); // Reset the timer animation on correct answer
         }
       }, 3500); // Delay before showing the new question (3500 milliseconds = 3.5 seconds)
       break;
@@ -82,7 +118,7 @@ function rotateCube() {
       cube.style.transform = `rotateY(-90deg)`;
       setTimeout(() => {
         cubeState = states.INITIAL;
-        rotateCube();
+        showNewQuestion(); // Show a new question after rotating back to initial
       }, 500);
       break;
     case states.JUMP_UP:
