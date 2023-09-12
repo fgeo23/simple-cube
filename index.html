@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Cube Game</title>
+</head>
+<body>
+    </div>
+    <div class="cube-container">
+        <div class="cube">
+            <div class="face front">
+             </div>
+            <div class="face back">
+             </div>
+            <div class="face top">
+             </div>
+            <div class="face bottom">
+                Congratulations!
+                <div class="reset">
+                    Again?
+                </div>
+             </div>
+            <div class="face left">
+             </div>
+            <div class="face right">
+             </div>
+        </div>
+    </div>
+    <form class="input-container" id="answerForm" autocomplete="off">
+        <input type="text" id="userAnswer" placeholder="Your answer">
+        <button class="answer-button">Submit</button>
+    </form>
+    
+    <script>
+        const questionsAndAnswers = [
+            {
+                question: "What is the capital of France?",
+                answer: "Paris"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                answer: "Mars"
+            },
+            {
+                question: "What is the largest mammal?",
+                answer: "Blue Whale"
+            }
+        ];
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>

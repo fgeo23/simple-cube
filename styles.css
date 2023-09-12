@@ -1,0 +1,83 @@
+/* styles.css */
+.cube-container {
+  align-items: center;
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.cube {
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+  width: 200px;
+}
+
+.face {
+  align-items: center;
+  background-color: #e0e0e0;
+  backface-visibility: hidden;
+  display: flex;
+  font-size: 18px;
+  height: 200px;
+  justify-content: center;
+  position: absolute;
+  text-align: center;
+  width: 200px;
+}
+
+.front {
+  background-color: #f8cc0f;
+  transform: translateZ(100px);
+}
+
+.back {
+  background-color: #53bdeb;
+  transform: rotateY(180deg) translateZ(100px);
+}
+
+.right {
+  background-color: #4db849;
+  transform: rotateY(-90deg) translateZ(100px);
+}
+
+.left {
+  background-color: #e8483f;
+  transform: rotateY(90deg) translateZ(100px);
+}
+
+.top {
+  background-color: #000;
+  transform: rotateX(90deg) translateZ(100px);
+}
+
+.bottom {
+  background-color: blueviolet;
+  transform: rotateX(-90deg) translateZ(100px);
+}
+
+form.input-container {
+  display: flex;
+  justify-content: center;
+}
+
+.input-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.answer-button {
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
