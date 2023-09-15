@@ -1,10 +1,12 @@
 const answerForm = document.getElementById("answerForm");
 const userAnswerInput = document.getElementById("userAnswer");
 const questionTimer = document.getElementById("questionTimer");
+const timerCircle = document.getElementById("timerCircle"); 
 
 let currentIndex = 0;
 let timer;
 const questionDuration = 15; // The duration for each question in seconds
+let timeLeft = questionDuration;
 
 // Define the states
 const states = {
@@ -12,6 +14,7 @@ const states = {
   CORRECT_ANSWER: "correctAnswer",
   WRONG_ANSWER: "wrongAnswer",
   JUMP_UP: "jumpUp",
+  FAIL: "failure"
 };
 
 // Initialize the cube state
@@ -21,6 +24,25 @@ userAnswerInput.focus();
 
 const cube = document.querySelector(".cube");
 
+// Function to start the countdown timer for each question
+function startTimer() {
+  timeLeft = questionDuration;
+  updateTimerDisplay();
+  timerCircle.classList.remove("expired"); // Remove the expired class
+  timer = setInterval(() => {
+    timeLeft--;
+    if (timeLeft <= 0) {
+      // Time's up, transition to the next question
+      clearInterval(timer);
+      cubeState = states.FAIL;
+      rotateCube();
+      timerCircle.classList.add("expired"); // Add the expired class
+    } else {
+      updateTimerDisplay();
+    }
+  }, 1000); // Update the timer every second (1000 milliseconds)
+}
+
 // Initialize the cube content
 function initializeCube() {
   const frontFace = document.querySelector(".front");
@@ -28,6 +50,15 @@ function initializeCube() {
 
   const backFace = document.querySelector(".back");
   backFace.textContent = questionsAndAnswers[currentIndex].answer;
+
+  // Start the countdown timer for the new question
+  startTimer();
+}
+
+function stopTimer() {
+  clearInterval(timer);
+  timerCircle.style.display = 'none';
+  questionTimer.textContent = ``;
 }
 
 initializeCube(); // Call this function to set the initial cube content
@@ -46,37 +77,23 @@ function showNewQuestion() {
   cube.style.transform = `rotateX(0deg)`;
 
   // Start the countdown timer for the new question
-  startTimer();
+  resetTimer();
 }
 
-// Function to start the countdown timer for each question
-function startTimer() {
-  let timeLeft = questionDuration;
-  questionTimer.textContent = `${timeLeft}`;
-
-  timer = setInterval(() => {
-    timeLeft--;
-
-    if (timeLeft <= 0) {
-      // Time's up, transition to the next question
-      clearInterval(timer);
-      cubeState = states.INITIAL;
-      rotateCube();
-    } else {
-      questionTimer.textContent = `${timeLeft}`;
-    }
-  }, 1000); // Update the timer every second (1000 milliseconds)
+// Function to update the timer display
+function updateTimerDisplay() {
+  questionTimer.textContent = `${String(timeLeft).padStart(2, "0")}`;
 }
 
 // Function to reset the timer animation
-function resetTimerAnimation() {
-    const timerCircle = document.getElementById("timerCircle");
-    console.log(timerCircle);
-    // Reset the stroke-dashoffset property to its initial value
-    timerCircle.style.display = 'none';
-    setTimeout(() => {
-        timerCircle.style.display = 'block'; 
-    });
+function resetTimer() {
+  timeLeft = questionDuration;
+  timerCircle.classList.remove("expired"); // Remove the expired class
+  // Reset the stroke-dashoffset property to its initial value
+  timerCircle.style.display = 'none';
+  setTimeout(() => {
+      timerCircle.style.display = 'block'; 
+  });
 }
 
 // Handle answer
@@ -109,23 +126,28 @@ function rotateCube() {
       cube.style.transform = `rotateY(180deg)`;
       setTimeout(() => {
         if (cubeState !== states.JUMP_UP) {
-          showNewQuestion(); // Show a new question after rotating (except when jumping up)
-          resetTimerAnimation(); // Reset the timer animation on correct answer
+          showNewQuestion();
         }
-      }, 3500); // Delay before showing the new question (3500 milliseconds = 3.5 seconds)
+      }, 2500);
       break;
     case states.WRONG_ANSWER:
       cube.style.transform = `rotateY(-90deg)`;
       setTimeout(() => {
         cubeState = states.INITIAL;
-        showNewQuestion(); // Show a new question after rotating back to initial
+        rotateCube();
       }, 500);
       break;
     case states.JUMP_UP:
       cube.style.transform = `translateY(-100px) scale(1.3) rotateX(90deg)`;
+      stopTimer();
+      break;
+    case states.FAIL:
+      cube.style.transform = `translateY(-50px) scale(0.7) rotateX(-90deg)`;
+      stopTimer();
       break;
     case states.INITIAL:
       cube.style.transform = `rotateY(0deg) translateY(0) scale(1) rotateX(0deg)`;
+      break;
     default:
       // Handle the initial state or any other states if needed
       break;
