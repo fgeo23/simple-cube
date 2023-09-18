@@ -43,11 +43,13 @@ function startTimer() {
 
 // Initialize the cube content
 function initializeCube() {
-  const frontFace = document.querySelector(".front");
-  frontFace.textContent = questionsAndAnswers[currentIndex].question;
-
-  const backFace = document.querySelector(".back");
-  backFace.textContent = questionsAndAnswers[currentIndex].answer;
+  setTimeout(() => {
+    const frontFace = document.querySelector(".front");
+    frontFace.textContent = questionsAndAnswers[currentIndex].question;
+  
+    const backFace = document.querySelector(".back");
+    backFace.textContent = questionsAndAnswers[currentIndex].answer;
+  }, 250);
 
   // Start the countdown timer for the new question
   startTimer();
@@ -105,7 +107,7 @@ answerForm.addEventListener("submit", (e) => {
   const userAnswer = userAnswerInput.value.toLowerCase();
   const correctAnswer = questionsAndAnswers[currentIndex].answer.toLowerCase();
 
-  if (fuzzyCompare(userAnswer, correctAnswer)) {
+  if (correctAnswer === "@" || fuzzyCompare(userAnswer, correctAnswer)) {
     if (currentIndex === questionsAndAnswers.length - 1) {
       cubeState = states.JUMP_UP; // Transition to the jumpUp state if all questions are answered correctly
     } else {
@@ -120,6 +122,13 @@ answerForm.addEventListener("submit", (e) => {
 
   userAnswerInput.value = "";
 });
+
+function resetGame() {
+  cubeState = states.INITIAL;
+  currentIndex = 0;
+  timeLeft = questionDuration;
+  rotateCube();
+}
 
 // Global function that rotates the cube based on the current state
 function rotateCube() {

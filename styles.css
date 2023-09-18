@@ -52,6 +52,7 @@
 .top {
   background-color: #000;
   transform: rotateX(90deg) translateZ(100px);
+  color: white;
 }
 
 .bottom {
