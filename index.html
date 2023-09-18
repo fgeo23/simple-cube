@@ -50,6 +50,23 @@
         <input type="text" id="userAnswer" placeholder="Your answer">
         <button class="answer-button">Submit</button>
     </form>
+
+    <button id="settingsButton">Settings</button>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Game Settings</h2>
+            <label for="animationDuration">Animation Duration (ms):</label>
+            <input type="number" id="animationDuration" value="2500">
+            <label for="questionDuration">Question Duration (s):</label>
+            <input type="number" id="questionDuration" value="15">
+            <label for="customQuestions">Custom Questions (JSON):</label>
+            <textarea id="customQuestions" rows="4"></textarea>
+            <button id="applySettings">Apply</button>
+        </div>
+    </div>
+    
     
     <script>
         const questionsAndAnswers = [

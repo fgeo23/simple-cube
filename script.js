@@ -204,3 +204,76 @@ function fuzzyCompare(str1, str2) {
 
   return levenshteinDistance(str1, str2) <= maxTypos;
 }
+
+// Get references to HTML elements
+const settingsButton = document.getElementById("settingsButton");
+const settingsModal = document.getElementById("settingsModal");
+const applySettingsButton = document.getElementById("applySettings");
+const animationDurationInput = document.getElementById("animationDuration");
+const questionDurationInput = document.getElementById("questionDuration");
+const customQuestionsInput = document.getElementById("customQuestions");
+
+// Show the settings modal when the settings button is clicked
+settingsButton.addEventListener("click", () => {
+    settingsModal.style.display = "block";
+});
+
+// Close the settings modal when the close button (x) is clicked
+document.querySelector(".close").addEventListener("click", () => {
+    settingsModal.style.display = "none";
+});
+
+// Apply settings when the apply button is clicked
+applySettingsButton.addEventListener("click", () => {
+  // Get the values from the input fields
+  const animationDuration = parseInt(animationDurationInput.value);
+  const questionDurationSetting = parseInt(questionDurationInput.value);
+  // Parse the custom questions text into JSON format
+  const customQuestions = parseCustomQuestions(customQuestionsText);
+
+  // Update game settings based on user input
+  // For example, you can update the animation duration and question duration variables here
+  // You can also update the questionsAndAnswers array with custom questions
+  // Ensure to handle any errors or validation for user inputs
+
+  // Update animation duration (in milliseconds)
+  // For example, you can set the cube animation duration like this:
+  cube.style.transition = `transform ${animationDuration}ms ease-in-out`;
+
+  // Update question duration (in seconds)
+  // For example, you can set the question duration like this:
+  questionDuration = questionDurationSetting;
+
+  // Update custom questions if provided
+  if (Array.isArray(customQuestions)) {
+      questionsAndAnswers = customQuestions;
+  }
+
+  // Close the settings modal
+  settingsModal.style.display = "none";
+});
+
+// Function to parse the custom questions text into JSON format
+function parseCustomQuestions(text) {
+  const lines = text.split('\n');
+  const questions = [];
+
+  let currentQuestion = null;
+  for (const line of lines) {
+      if (line.startsWith('Q:')) {
+          // Start of a new question
+          currentQuestion = {
+              question: line.substring(2).trim(),
+          };
+      } else if (line.startsWith('A:')) {
+          // Answer for the current question
+          if (currentQuestion) {
+              currentQuestion.answer = line.substring(2).trim();
+              questions.push(currentQuestion);
+              currentQuestion = null;
+          }
+      }
+  }
+
+  return questions;
+}
