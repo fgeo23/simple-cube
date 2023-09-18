@@ -1,7 +1,7 @@
 const answerForm = document.getElementById("answerForm");
 const userAnswerInput = document.getElementById("userAnswer");
 const questionTimer = document.getElementById("questionTimer");
-const timerCircle = document.getElementById("timerCircle"); 
+const timerCircle = document.getElementById("timerCircle");
 
 let currentIndex = 0;
 let timer;
@@ -28,7 +28,6 @@ const cube = document.querySelector(".cube");
 function startTimer() {
   timeLeft = questionDuration;
   updateTimerDisplay();
-  timerCircle.classList.remove("expired"); // Remove the expired class
   timer = setInterval(() => {
     timeLeft--;
     if (timeLeft <= 0) {
@@ -36,7 +35,6 @@ function startTimer() {
       clearInterval(timer);
       cubeState = states.FAIL;
       rotateCube();
-      timerCircle.classList.add("expired"); // Add the expired class
     } else {
       updateTimerDisplay();
     }
@@ -88,17 +86,21 @@ function updateTimerDisplay() {
 // Function to reset the timer animation
 function resetTimer() {
   timeLeft = questionDuration;
-  timerCircle.classList.remove("expired"); // Remove the expired class
   // Reset the stroke-dashoffset property to its initial value
   timerCircle.style.display = 'none';
   setTimeout(() => {
       timerCircle.style.display = 'block'; 
-  });
+  }, 50);
 }
 
 // Handle answer
 answerForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
+  // Check if the user left the answer input field empty
+  if (userAnswerInput.value === '') {
+    return;
+  }
 
   const userAnswer = userAnswerInput.value.toLowerCase();
   const correctAnswer = questionsAndAnswers[currentIndex].answer.toLowerCase();
@@ -187,6 +189,9 @@ function fuzzyCompare(str1, str2) {
 
     return matrix[b.length][a.length];
   }
+
+  str1 = str1.toLowerCase();
+  str2 = str2.toLowerCase();
 
   return levenshteinDistance(str1, str2) <= maxTypos;
 }
